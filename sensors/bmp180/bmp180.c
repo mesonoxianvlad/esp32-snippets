@@ -191,8 +191,8 @@ static float get_altitude(int32_t pressure, float pressure_at_sea_level) {
   return 44330 * (1.0 - pow((float) pressure / pressure_at_sea_level, 0.1903));;
 }
 
-static float calculate_sea_level_pressure(int32_t absolute_pressure, float altitude) {
-	return ((float) absolute_pressure) / (pow(1 - (altitude / 44330.0), 5.255));
+static float calculate_sea_level_pressure(int32_t absolute_pressure, float current_altitude) {
+	return ((float) absolute_pressure) / (pow(1 - (current_altitude / 44330.0), 5.255));
 }
 
 static void bmp180_get_data() {
@@ -206,7 +206,7 @@ static void bmp180_get_data() {
 	float altitude = get_altitude(c_pressure, 101300);
 	float sea_level_pressure = calculate_sea_level_pressure(c_pressure, 10.0);
 	
-	ESP_LOGI(tag, "\nTemp (C): %.02f\nPressure (Pa): %d\nPressure (hPa): %.02f\nAltitude (m): %.02f\nPressure at sea level: %f", c_temp, c_pressure, (float) c_pressure / 100.0, altitude, sea_level_pressure);
+	ESP_LOGI(tag, "\nTemp (C): %.02f\nPressure (Pa): %d\nPressure (hPa): %.02f\nAltitude (m): %.02f\nPressure at sea level (Pa): %f", c_temp, c_pressure, (float) c_pressure / 100.0, altitude, sea_level_pressure);
 }
 
 static esp_err_t bmp180_is_available() {
