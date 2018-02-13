@@ -1,17 +1,25 @@
 #include <freertos/FreeRTOS.h>
 
 static void i2c_master_init();
+static void bmp180_init_cal_data();
+
+static void read_n_bytes(uint8_t, uint8_t, uint8_t*);
 static uint8_t read_8(uint8_t);
 static int16_t read_16(uint8_t);
-static void bmp180_init_cal_data();
+static int32_t read_24(uint8_t);
+
+static void set_read_command(uint8_t);
 static int32_t bmp180_read_uncompensated_temp();
 static int32_t bmp180_read_uncompensated_pressure();
+
 static int32_t get_b5(int32_t);
 static double calculate_calibrated_temp(int32_t);
 static int32_t calculate_calibrated_pressure(int32_t, int32_t);
+
 static float get_altitude(int32_t, float);
 static float calculate_sea_level_pressure(int32_t, float);
 static void bmp180_get_data();
+static esp_err_t bmp180_is_available();
 
 /*
     @brief Enum of addresses regarding BMP180 sensor
